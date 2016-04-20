@@ -1,0 +1,52 @@
+- hosts: 127.0.0.1
+  connection: local
+  vars_files:
+    - vars/main.yml
+  tasks:
+    - name: create container
+      docker:
+        name: tmp-oracle-database-inst
+        image: "{{ base_image }}"
+        command: sleep infinity
+        state: started
+
+    - add_host:
+        name: tmp-oracle-database-inst
+        groups: docker
+        ansible_connection: docker
+
+- hosts: tmp-oracle-database-inst
+  connection: docker
+  roles:
+    - role: sysco-middleware.oracle-database-instance
+      oracle_database_version: 11g
+      oracle_database_sid: orcl
+      oracle_database_global_name: orcl
+      oracle_database_template_name: General_Purpose.dbc
+      oracle_database_admin_password: welcome1
+      oracle_database_auto_memory_mgnt: TRUE
+      oracle_database_memory_percentage: 80
+      oracle_database_memory_total: 1024
+      oracle_database_type: MULTIPURPOSE
+      oracle_database_listener_name: LISTENER
+      oracle_database_listener_port: 1521
+      oracle_database_init_params: JAVA_JIT_ENABLED=FALSE
+
+- hosts: 127.0.0.1
+  connection: local
+  vars_files:
+    - vars/main.yml
+  tasks:
+    - name: docker commit
+      command: "docker commit tmp-oracle-database-inst {{ organization }}/{{ image_name }}:{{ item }}"
+      with_items: "{{ tags }}"
+
+    - name: docker push
+      command: "docker push {{ organization }}/{{ image_name }}:{{ item }}"
+      with_items: "{{ tags }}"
+
+    - name: docker kill
+      command: "docker kill tmp-oracle-database-inst"
+
+    - name: docker rm
+      command: "docker rm tmp-oracle-database-inst"

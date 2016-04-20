@@ -1,0 +1,6 @@
+base_image: syscomiddleware/oracle-database:oraclelinux-11.2.0.4
+organization: syscomiddleware
+image_name: oracle-database-instance
+tags:
+  - latest
+  - oraclelinux-11.2.0.4
