@@ -38,15 +38,24 @@
     - vars/main.yml
   tasks:
     - name: docker commit
-      command: "docker commit tmp-oracle-database-inst {{ organization }}/{{ image_name }}:{{ item }}"
-      with_items: "{{ tags }}"
-
-    - name: docker push
-      command: "docker push {{ organization }}/{{ image_name }}:{{ item }}"
-      with_items: "{{ tags }}"
+      command: "docker commit tmp-oracle-database-inst tmp-oracle-database-inst"
 
     - name: docker kill
       command: "docker kill tmp-oracle-database-inst"
 
     - name: docker rm
       command: "docker rm tmp-oracle-database-inst"
+
+    - name: build image
+      command: "docker build -t {{ image_name }} docker"
+
+    - name: docker tag
+      command: "docker tag {{ image_name }} {{ image_name }}:{{ item }}"
+      with_items: "{{ tags }}"
+
+    - name: docker rmi
+      command: "docker rmi tmp-oracle-database-inst"
+
+    - name: docker push
+      command: "docker push {{ image_name }}:{{ item }}"
+      with_items: "{{ tags }}"
