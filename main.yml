@@ -19,7 +19,7 @@
   connection: docker
   roles:
     - role: sysco-middleware.oracle-database-instance
-      oracle_database_version: 11g
+      oracle_database_version: 12c
       oracle_database_sid: orcl
       oracle_database_global_name: orcl
       oracle_database_template_name: General_Purpose.dbc
@@ -38,7 +38,7 @@
     - vars/main.yml
   tasks:
     - name: docker commit
-      command: "docker commit tmp-oracle-db-instance tmp-oracle-db-instance"
+      command: "docker commit tmp-oracle-db-instance {{ base_image_name }}"
 
     - name: docker kill
       command: "docker kill tmp-oracle-db-instance"
@@ -47,16 +47,13 @@
       command: "docker rm tmp-oracle-db-instance"
 
     - name: build image
-      command: "docker build -t {{ image_name }} docker"
+      command: "docker build -t {{ image_name }} dockerfile"
 
     - name: docker tag
       command: "docker tag {{ image_name }} {{ image_name }}:{{ item }}"
       with_items: "{{ tags }}"
 
-    - name: docker rmi
-      command: "docker rmi tmp-oracle-db-instance"
-
     # image should be push into a private registry
-    # - name: docker push
-    #   command: "docker push {{ image_name }}:{{ item }}"
-    #   with_items: "{{ tags }}"
+    - name: docker push
+      command: "docker push {{ image_name }}:{{ item }}"
+      with_items: "{{ tags }}"
