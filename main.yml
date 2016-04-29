@@ -5,17 +5,17 @@
   tasks:
     - name: create container
       docker:
-        name: tmp-oracle-database-inst
+        name: tmp-oracle-db-instance
         image: "{{ base_image }}"
         command: sleep infinity
         state: started
 
     - add_host:
-        name: tmp-oracle-database-inst
+        name: tmp-oracle-db-instance
         groups: docker
         ansible_connection: docker
 
-- hosts: tmp-oracle-database-inst
+- hosts: tmp-oracle-db-instance
   connection: docker
   roles:
     - role: sysco-middleware.oracle-database-instance
@@ -38,13 +38,13 @@
     - vars/main.yml
   tasks:
     - name: docker commit
-      command: "docker commit tmp-oracle-database-inst tmp-oracle-database-inst"
+      command: "docker commit tmp-oracle-db-instance tmp-oracle-db-instance"
 
     - name: docker kill
-      command: "docker kill tmp-oracle-database-inst"
+      command: "docker kill tmp-oracle-db-instance"
 
     - name: docker rm
-      command: "docker rm tmp-oracle-database-inst"
+      command: "docker rm tmp-oracle-db-instance"
 
     - name: build image
       command: "docker build -t {{ image_name }} docker"
@@ -54,7 +54,7 @@
       with_items: "{{ tags }}"
 
     - name: docker rmi
-      command: "docker rmi tmp-oracle-database-inst"
+      command: "docker rmi tmp-oracle-db-instance"
 
     # image should be push into a private registry
     # - name: docker push
