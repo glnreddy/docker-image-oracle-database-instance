@@ -1,4 +1,4 @@
-FROM tmp-oracle-database-inst
+FROM tmp-oracle-db-instance
 
 MAINTAINER Jorge Quilcate <jorge.quilcate@sysco.no>
 
