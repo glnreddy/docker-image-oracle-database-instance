@@ -5,17 +5,17 @@
   tasks:
     - name: create container
       docker:
-        name: tmp-oracle-db-instance
+        name: tmp-oracle-database-instance
         image: "{{ base_image }}"
         command: sleep infinity
         state: started
 
     - add_host:
-        name: tmp-oracle-db-instance
+        name: tmp-oracle-database-instance
         groups: docker
         ansible_connection: docker
 
-- hosts: tmp-oracle-db-instance
+- hosts: tmp-oracle-database-instance
   connection: docker
   roles:
     - role: sysco-middleware.oracle-database-instance
@@ -38,13 +38,13 @@
     - vars/main.yml
   tasks:
     - name: docker commit
-      command: "docker commit tmp-oracle-db-instance {{ base_image_name }}"
+      command: "docker commit tmp-oracle-database-instance {{ base_image_name }}"
 
     - name: docker kill
-      command: "docker kill tmp-oracle-db-instance"
+      command: "docker kill tmp-oracle-database-instance"
 
     - name: docker rm
-      command: "docker rm tmp-oracle-db-instance"
+      command: "docker rm tmp-oracle-database-instance"
 
     - name: build image
       command: "docker build -t {{ image_name }} dockerfile"
