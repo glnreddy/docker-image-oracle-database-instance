@@ -1,4 +1,4 @@
-FROM syscomiddleware/oracle-database-instance-base
+FROM tmp-oracle-database-instance
 
 MAINTAINER Jorge Quilcate <jorge.quilcate@sysco.no>
 
@@ -9,7 +9,7 @@ ENV ORACLE_SID orcl
 
 WORKDIR $ORACLE_HOME
 
-ADD listener.ora.tmpl network/admin/listener.ora.tmpl
-ADD startup.sh .
+ADD files/listener.ora.tmpl network/admin/listener.ora.tmpl
+ADD files/startup.sh .
 
 CMD sh startup.sh && tail -f startup.log

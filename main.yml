@@ -38,7 +38,7 @@
     - vars/main.yml
   tasks:
     - name: docker commit
-      command: "docker commit tmp-oracle-database-instance {{ base_image_name }}"
+      command: "docker commit tmp-oracle-database-instance tmp-oracle-database-instance"
 
     - name: docker kill
       command: "docker kill tmp-oracle-database-instance"
@@ -47,11 +47,10 @@
       command: "docker rm tmp-oracle-database-instance"
 
     - name: build image
-      command: "docker build -t {{ image_name }} dockerfile"
+      command: "docker build -t {{ image_name }} ."
 
     - name: docker tag
-      command: "docker tag {{ image_name }} {{ image_name }}:{{ item }}"
-      with_items: "{{ tags }}"
+      command: "docker tag {{ image_name }} {{ image_name }}:{{ tag }}"
 
     # image should be push into a private registry
     # - name: docker push
