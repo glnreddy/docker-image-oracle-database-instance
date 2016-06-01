@@ -21,3 +21,5 @@ Run:
 ## Tags
 
 - basic-11.2.0.4-se-oraclelinux6.7
+
+- basic-12.1.0.2-se-oraclelinux6.7

@@ -1,3 +1,3 @@
-base_image: syscomiddleware/oracle-database:11.2.0.4-se-oraclelinux6.7
+base_image: syscomiddleware/oracle-database:12.1.0.2-se-oraclelinux6.7
 image_name: syscomiddleware/oracle-database-instance
-tag: basic-11.2.0.4-se-oraclelinux6.7
+tag: basic-12.1.0.2-se-oraclelinux6.7

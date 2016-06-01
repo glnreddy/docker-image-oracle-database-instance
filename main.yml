@@ -19,7 +19,7 @@
   connection: docker
   roles:
     - role: sysco-middleware.oracle-database-instance
-      oracle_database_version: 11g
+      oracle_database_version: 12c
       oracle_database_sid: orcl
       oracle_database_global_name: orcl
       oracle_database_template_name: General_Purpose.dbc
